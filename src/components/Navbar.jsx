@@ -31,6 +31,9 @@ export default function Navbar() {
                         <li className="nav-item">
                             <Link className="nav-link" to="/bucket-list">Bucket List</Link>
                         </li>
+                        <li className="nav-item">
+                            <Link className="nav-link" to="/locations">Locations</Link>
+                        </li>
                     </ul>
                     <ul className="navbar-nav ms-auto">
                         <li className="nav-item">

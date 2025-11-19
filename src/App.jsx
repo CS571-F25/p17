@@ -8,6 +8,7 @@ import BucketList from './components/BucketList'
 import LoginSignup from './components/LoginSignup'
 import Signup from './components/Signup'
 import Navbar from './components/Navbar'
+import AllLocations from './components/AllLocations';
 
 export const AuthContext = createContext();
 
@@ -23,6 +24,7 @@ function App() {
           <Route path="/about" element={<AboutMe/>}></Route>
           <Route path="/questionnaire" element={<Questionnaire/>}></Route>
           <Route path="/bucket-list" element={<BucketList/>}></Route>
+          <Route path="/locations" element={<AllLocations />} />
           <Route path="/login" element={<LoginSignup/>}></Route>
           <Route path="/signup" element={<Signup/>}></Route>
         </Routes>
