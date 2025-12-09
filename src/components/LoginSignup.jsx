@@ -1,19 +1,63 @@
 import { useContext, useState } from 'react';
 import { Link } from 'react-router';
 import { AuthContext } from '../App';
+import Cookies from 'js-cookie';
+import { getAllUsers } from '../utils/bucket';
+import { useNavigate } from 'react-router';
 
 export default function LoginSignup() {
     const { isLoggedIn, setIsLoggedIn } = useContext(AuthContext);
+    const navigate = useNavigate();
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
-    
+    const [message, setMessage] = useState('');
+
     const handleLogout = () => {
+        Cookies.remove('auth', { path: '/' });
         setIsLoggedIn(false);
+        navigate('/login');
     };
-    
+
+    async function handleLogin() {
+        setMessage('');
+
+        if (!username || !password) {
+            setMessage('Username and password are required.');
+            return;
+        }
+
+        try {
+            const users = await getAllUsers();
+            const match = users.find(u => u.username === username);
+
+            if (!match) {
+                setMessage('No account exists with that username.');
+                return;
+            }
+
+            if (match.password !== password) {
+                setMessage('Incorrect password.');
+                return;
+            }
+
+            const token = btoa(JSON.stringify({
+                username: match.username,
+                _id: match._id
+            }));
+
+            Cookies.set('auth', token, { expires: 7 });
+
+            setIsLoggedIn(true);
+            navigate('/');
+        } catch (err) {
+            console.error("LOGIN ERROR:", err);
+            setMessage('Login failed — see console.');
+        }
+    }
+
     if (isLoggedIn) {
         return (
-            <div style={{ padding: '20px', maxWidth: '400px', margin: '50px auto' }}>
+            <div style={{ padding: '20px', maxWidth: '400px', margin: '80px auto', textAlign: 'center' }}>
                 <h1>Welcome!</h1>
                 <button 
                     onClick={handleLogout}
@@ -24,7 +68,8 @@ export default function LoginSignup() {
                         color: 'white',
                         border: 'none',
                         borderRadius: '5px',
-                        cursor: 'pointer'
+                        cursor: 'pointer',
+                        marginTop: '20px'
                     }}
                 >
                     Logout
@@ -32,55 +77,55 @@ export default function LoginSignup() {
             </div>
         );
     }
-    
+
     return (
-        <div style={{ padding: '20px', maxWidth: '400px', margin: '50px auto' }}>
-            <h1>Login</h1>
-            <form style={{ display: 'flex', flexDirection: 'column', gap: '15px' }}>
-                <div>
-                    <label htmlFor="username" style={{ display: 'block', marginBottom: '5px' }}>
-                        Username:
-                    </label>
-                    <input
-                        type="text"
-                        id="username"
-                        value={username}
-                        onChange={(e) => setUsername(e.target.value)}
-                        style={{
-                            width: '100%',
-                            padding: '8px',
-                            fontSize: '16px',
-                            border: '1px solid #ccc',
-                            borderRadius: '4px',
-                            boxSizing: 'border-box',
-                            backgroundColor: 'white',
-                            color: 'black'
-                        }}
-                    />
-                </div>
-                <div>
-                    <label htmlFor="password" style={{ display: 'block', marginBottom: '5px' }}>
-                        Password:
-                    </label>
-                    <input
-                        type="password"
-                        id="password"
-                        value={password}
-                        onChange={(e) => setPassword(e.target.value)}
-                        style={{
-                            width: '100%',
-                            padding: '8px',
-                            fontSize: '16px',
-                            border: '1px solid #ccc',
-                            borderRadius: '4px',
-                            boxSizing: 'border-box',
-                            backgroundColor: 'white',
-                            color: 'black'
-                        }}
-                    />
-                </div>
+        <div style={{ padding: '20px', maxWidth: '400px', margin: '80px auto' }}>
+            <h1 style={{ textAlign: 'center', marginBottom: '30px' }}>Login</h1>
+
+            <form style={{ display: 'flex', flexDirection: 'column', gap: '20px' }}>
+                <input
+                    className="signup-input"
+                    type="text"
+                    placeholder="Username"
+                    value={username}
+                    onChange={(e) => setUsername(e.target.value)}
+                />
+
+                <input
+                    className="signup-input"
+                    type="password"
+                    placeholder="Password"
+                    value={password}
+                    onChange={(e) => setPassword(e.target.value)}
+                />
             </form>
-            <p style={{ marginTop: '20px', textAlign: 'center' }}>New Here?</p>
+
+            <button
+                type="button"
+                onClick={handleLogin}
+                style={{
+                    width: '100%',
+                    padding: '12px 20px',
+                    fontSize: '16px',
+                    backgroundColor: '#007bff',
+                    color: 'white',
+                    borderRadius: '25px',
+                    border: 'none',
+                    cursor: 'pointer',
+                    marginTop: '25px'
+                }}
+            >
+                Login
+            </button>
+
+            {message && (
+                <p style={{ marginTop: '15px', textAlign: 'center', color: 'black' }}>
+                    {message}
+                </p>
+            )}
+
+            <p style={{ marginTop: '25px', textAlign: 'center' }}>New Here?</p>
+
             <div style={{ textAlign: 'center', marginTop: '10px' }}>
                 <Link 
                     to="/signup"
@@ -96,4 +141,3 @@ export default function LoginSignup() {
         </div>
     );
 }
-

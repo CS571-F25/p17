@@ -41,3 +41,28 @@
 .read-the-docs {
   color: #888;
 }
+
+.signup-input {
+  width: 100%;
+  padding: 12px 15px;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  font-size: 16px;
+  background: white;
+  outline: none;
+  transition: 0.2s;
+  color: black;
+}
+
+/* Fix autofill from turning fields dark */
+.signup-input:-webkit-autofill {
+  -webkit-box-shadow: 0 0 0 1000px white inset !important;
+  -webkit-text-fill-color: black !important;
+}
+
+/* Focus styling */
+.signup-input:focus {
+  border-color: #007bff;
+  box-shadow: 0 0 3px rgba(0,123,255,0.5);
+}
+

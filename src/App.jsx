@@ -9,11 +9,22 @@ import LoginSignup from './components/LoginSignup'
 import Signup from './components/Signup'
 import Navbar from './components/Navbar'
 import AllLocations from './components/AllLocations';
+import Cookies from "js-cookie";
+import { useEffect } from 'react';
 
 export const AuthContext = createContext();
 
 function App() {
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [isLoggedIn, setIsLoggedIn] = useState(!!Cookies.get("auth"));
+
+  useEffect(() => {
+    const token = Cookies.get('auth');
+    if (token) {
+      setIsLoggedIn(true);
+    } else {
+      setIsLoggedIn(false);
+    }
+  }, []);
 
   return (
     <AuthContext.Provider value={{ isLoggedIn, setIsLoggedIn }}>
