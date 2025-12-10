@@ -9,8 +9,10 @@ import LoginSignup from './components/LoginSignup'
 import Signup from './components/Signup'
 import Navbar from './components/Navbar'
 import AllLocations from './components/AllLocations';
+import TravelPosts from './components/TravelPosts';
 import Cookies from "js-cookie";
 import { useEffect } from 'react';
+import 'bootstrap/dist/css/bootstrap.min.css';
 
 export const AuthContext = createContext();
 export const BucketListContext = createContext();
@@ -52,7 +54,8 @@ function App() {
             <Route path="/questionnaire" element={<Questionnaire/>}></Route>
             <Route path="/bucket-list" element={<BucketList/>}></Route>
             <Route path="/locations" element={<AllLocations />} />
-            <Route path="/login" element={<LoginSignup/>}></Route>
+            <Route path="/posts" element={<TravelPosts />} />
+          <Route path="/login" element={<LoginSignup/>}></Route>
             <Route path="/signup" element={<Signup/>}></Route>
           </Routes>
         </HashRouter>
