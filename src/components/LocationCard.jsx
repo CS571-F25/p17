@@ -26,7 +26,7 @@ export default function LocationCard({ location }) {
   };
 
   return (
-    <Card className="shadow-sm text-start h-100 position-relative">
+    <Card className="shadow-sm text-start h-100 position-relative" style={{ width: "100%", minWidth: "280px", maxWidth: "400px", margin: "0 auto" }}>
       <Card.Body className="d-flex flex-column">
         <OverlayTrigger
           placement="bottom"
