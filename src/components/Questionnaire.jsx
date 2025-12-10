@@ -108,7 +108,7 @@ export default function Questionnaire() {
                         <h1 className="mb-4">Your Top 3 Destinations</h1>
                         {results.length === 0 ? (
                             <div className="alert alert-warning text-center" role="alert">
-                                <h4>No matches found</h4>
+                                <h2 className="h4 mb-3">No matches found</h2>
                                 <p>We couldn't find any destinations matching your selected continent and price level. Please try different preferences.</p>
                                 <button 
                                     type="button" 
@@ -165,12 +165,28 @@ export default function Questionnaire() {
         <div className="container my-5">
             <div className="row justify-content-center">
                 <div className="col-lg-8">
+                    <style>{`
+                        .form-check {
+                            display: flex;
+                            align-items: center;
+                            gap: 0.5rem;
+                            justify-content: center;
+                            padding-left: 0;
+                        }
+                        .form-check-input {
+                            margin: 0;
+                            position: relative;
+                        }
+                        .form-check-label {
+                            margin-bottom: 0;
+                        }
+                    `}</style>
                     <h1 className="mb-4">Travel Preferences Questionnaire</h1>
                     <form onSubmit={handleSubmit}>
                         {/* Question 1: Continent */}
                         <div className="mb-4">
-                            <h3 className="mb-3">1. Which continent do you prefer?</h3>
-                            <div className="form-check">
+                            <h2 className="h3 mb-3">1. Which continent do you prefer?</h2>
+                            <div>
                                 {['North America', 'South America', 'Europe', 'Asia', 'Africa', 'Oceania', 'No Preference'].map(continent => (
                                     <div key={continent} className="form-check mb-2">
                                         <input
@@ -192,8 +208,8 @@ export default function Questionnaire() {
 
                         {/* Question 2: Climate Preference */}
                         <div className="mb-4">
-                            <h3 className="mb-3">2. Climate Preference</h3>
-                            <div className="form-check">
+                            <h2 className="h3 mb-3">2. Climate Preference</h2>
+                            <div>
                                 {['Hot', 'Warm', 'Mild', 'Cold', 'Snowy'].map(climate => (
                                     <div key={climate} className="form-check mb-2">
                                         <input
@@ -215,8 +231,8 @@ export default function Questionnaire() {
 
                         {/* Question 3: Price Level */}
                         <div className="mb-4">
-                            <h3 className="mb-3">3. Price Level</h3>
-                            <div className="form-check">
+                            <h2 className="h3 mb-3">3. Price Level</h2>
+                            <div>
                                 {['Cheap', 'Medium', 'Expensive', 'Luxury'].map(price => (
                                     <div key={price} className="form-check mb-2">
                                         <input
@@ -238,7 +254,7 @@ export default function Questionnaire() {
 
                         {/* Question 4: Environment Preference (Multi-select) */}
                         <div className="mb-4">
-                            <h3 className="mb-3">4. Environment Preference (Select all that apply)</h3>
+                            <h2 className="h3 mb-3">4. Environment Preference (Select all that apply)</h2>
                             <div className="row">
                                 {['Beach', 'City', 'Island', 'Mountains', 'Forest', 'Countryside', 'Desert', 'Lakes', 'Coastal', 'River', 'Savannah', 'Hills', 'Nature'].map(env => (
                                     <div key={env} className="col-md-4 col-sm-6 mb-2">
@@ -262,7 +278,7 @@ export default function Questionnaire() {
 
                         {/* Question 5: Activities (Multi-select) */}
                         <div className="mb-4">
-                            <h3 className="mb-3">5. Activities You Enjoy (Select all that apply)</h3>
+                            <h2 className="h3 mb-3">5. Activities You Enjoy (Select all that apply)</h2>
                             <div className="row">
                                 {['Swimming', 'Nightlife', 'Food', 'Relaxation', 'Adventure', 'Hiking', 'Wildlife', 'Photography', 'Culture', 'Historical', 'Shopping', 'Diving', 'Festivals', 'Theme Parks', 'Wine Tasting'].map(activity => (
                                     <div key={activity} className="col-md-4 col-sm-6 mb-2">
@@ -286,8 +302,8 @@ export default function Questionnaire() {
 
                         {/* Question 6: Preferred Season (Multi-select) */}
                         <div className="mb-4">
-                            <h3 className="mb-3">6. Preferred Season (Select all that apply)</h3>
-                            <div className="form-check">
+                            <h2 className="h3 mb-3">6. Preferred Season (Select all that apply)</h2>
+                            <div>
                                 {['Winter', 'Spring', 'Summer', 'Fall'].map(season => (
                                     <div key={season} className="form-check mb-2">
                                         <input
@@ -308,8 +324,8 @@ export default function Questionnaire() {
 
                         {/* Question 7: Travel Pace */}
                         <div className="mb-4">
-                            <h3 className="mb-3">7. Travel Pace</h3>
-                            <div className="form-check">
+                            <h2 className="h3 mb-3">7. Travel Pace</h2>
+                            <div>
                                 {['Slow', 'Balanced', 'Fast'].map(pace => (
                                     <div key={pace} className="form-check mb-2">
                                         <input
