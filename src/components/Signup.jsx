@@ -63,29 +63,44 @@ export default function Signup() {
             <h1 style={{ textAlign: 'center', marginBottom: '30px' }}>Sign Up</h1>
 
             <form style={{ display: 'flex', flexDirection: 'column', gap: '20px' }}>
-                <input
-                    className="signup-input"
-                    type="text"
-                    placeholder="Username"
-                    value={username}
-                    onChange={(e) => setUsername(e.target.value)}
-                />
+                <label htmlFor="signup-username" style={{ fontSize: '14px', fontWeight: '500' }}>
+                    Username
+                    <input
+                        id="signup-username"
+                        className="signup-input"
+                        type="text"
+                        // placeholder="Username"
+                        value={username}
+                        onChange={(e) => setUsername(e.target.value)}
+                        style={{ display: 'block', width: '100%', marginTop: '5px' }}
+                    />
+                </label>
 
-                <input
-                    className="signup-input"
-                    type="password"
-                    placeholder="Password"
-                    value={password}
-                    onChange={(e) => setPassword(e.target.value)}
-                />
+                <label htmlFor="signup-password" style={{ fontSize: '14px', fontWeight: '500' }}>
+                    Password
+                    <input
+                        id="signup-password"
+                        className="signup-input"
+                        type="password"
+                        // placeholder="Password"
+                        value={password}
+                        onChange={(e) => setPassword(e.target.value)}
+                        style={{ display: 'block', width: '100%', marginTop: '5px' }}
+                    />
+                </label>
 
-                <input
-                    className="signup-input"
-                    type="password"
-                    placeholder="Confirm Password"
-                    value={confirmPassword}
-                    onChange={(e) => setConfirmPassword(e.target.value)}
-                />
+                <label htmlFor="signup-confirm-password" style={{ fontSize: '14px', fontWeight: '500' }}>
+                    Confirm Password
+                    <input
+                        id="signup-confirm-password"
+                        className="signup-input"
+                        type="password"
+                        // placeholder="Confirm Password"
+                        value={confirmPassword}
+                        onChange={(e) => setConfirmPassword(e.target.value)}
+                        style={{ display: 'block', width: '100%', marginTop: '5px' }}
+                    />
+                </label>
             </form>
 
             <button

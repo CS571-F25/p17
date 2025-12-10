@@ -17,7 +17,11 @@ export default function Searchbar({ value, onChange }) {
             }}
         >
             <Form style={{ width: "100%", maxWidth: "520px" }}>
+                <Form.Label htmlFor="search-locations" className="visually-hidden">
+                    Search by City or Country
+                </Form.Label>
                 <Form.Control
+                    id="search-locations"
                     type="text"
                     placeholder="Search by City/Country"
                     size="lg"

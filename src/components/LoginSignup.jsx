@@ -83,21 +83,31 @@ export default function LoginSignup() {
             <h1 style={{ textAlign: 'center', marginBottom: '30px' }}>Login</h1>
 
             <form style={{ display: 'flex', flexDirection: 'column', gap: '20px' }}>
-                <input
-                    className="signup-input"
-                    type="text"
-                    placeholder="Username"
-                    value={username}
-                    onChange={(e) => setUsername(e.target.value)}
-                />
+                <label htmlFor="login-username" style={{ fontSize: '14px', fontWeight: '500' }}>
+                    Username
+                    <input
+                        id="login-username"
+                        className="signup-input"
+                        type="text"
+                        // placeholder="Username"
+                        value={username}
+                        onChange={(e) => setUsername(e.target.value)}
+                        style={{ display: 'block', width: '100%', marginTop: '5px' }}
+                    />
+                </label>
 
-                <input
-                    className="signup-input"
-                    type="password"
-                    placeholder="Password"
-                    value={password}
-                    onChange={(e) => setPassword(e.target.value)}
-                />
+                <label htmlFor="login-password" style={{ fontSize: '14px', fontWeight: '500' }}>
+                    Password
+                    <input
+                        id="login-password"
+                        className="signup-input"
+                        type="password"
+                        // placeholder="Password"
+                        value={password}
+                        onChange={(e) => setPassword(e.target.value)}
+                        style={{ display: 'block', width: '100%', marginTop: '5px' }}
+                    />
+                </label>
             </form>
 
             <button
