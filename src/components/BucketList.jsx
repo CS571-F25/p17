@@ -27,15 +27,15 @@ export default function BucketList() {
                 ) : filteredBucketList.length === 0 ? (
                     <div className="alert alert-warning">No destinations match your search.</div>
                 ) : (
-                    <Row className="g-4 align-items-start w-100">
+                    <Row className="g-4 justify-content-center">
                         {filteredBucketList.map(destination => (
                             <Col
                                 key={destination.id}
                                 xs={12}
-                                sm={12}
+                                sm={6}
                                 md={6}
                                 lg={4}
-                                className="mb-4"
+                                className="mb-4 d-flex justify-content-center"
                             >
                                 <LocationCard location={destination} />
                             </Col>

@@ -1,10 +1,13 @@
 import { Card, OverlayTrigger, Tooltip } from "react-bootstrap";
 import { useContext } from "react";
-import { BucketListContext } from "../App";
+import { BucketListContext, AuthContext } from "../App";
 import bucketIcon from "../assets/bucketlist.png";
+import { useNavigate } from "react-router";
 
 export default function LocationCard({ location }) {
   const { bucketList, toggleBucketItem } = useContext(BucketListContext);
+  const { isLoggedIn } = useContext(AuthContext);
+  const navigate = useNavigate();
 
   const {
     name,
@@ -22,11 +25,20 @@ export default function LocationCard({ location }) {
   const isInBucket = bucketList.some((item) => item.id === id);
 
   const handleBucketToggle = () => {
-    if (location) toggleBucketItem(location);
+    console.log("Bucket toggle clicked!", { isLoggedIn, location });
+    if (!isLoggedIn) {
+      alert("Please log in to add destinations to your bucket list!");
+      navigate("/login");
+      return;
+    }
+    if (location) {
+      console.log("Calling toggleBucketItem with:", location);
+      toggleBucketItem(location);
+    }
   };
 
   return (
-    <Card className="shadow-sm text-start h-100 position-relative">
+    <Card className="shadow-sm text-start h-100 position-relative" style={{ width: "100%", minWidth: "280px", maxWidth: "400px", margin: "0 auto" }}>
       <Card.Body className="d-flex flex-column">
         <OverlayTrigger
           placement="bottom"

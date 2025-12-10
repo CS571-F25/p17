@@ -1,12 +1,13 @@
 import { useContext, useState } from 'react';
 import { Link } from 'react-router';
-import { AuthContext } from '../App';
+import { AuthContext, BucketListContext } from '../App';
 import Cookies from 'js-cookie';
-import { getAllUsers } from '../utils/bucket';
+import { getAllUsers, fetchFavorites } from '../utils/bucket';
 import { useNavigate } from 'react-router';
 
 export default function LoginSignup() {
-    const { isLoggedIn, setIsLoggedIn } = useContext(AuthContext);
+    const { isLoggedIn, setIsLoggedIn, setUserId, setUsername: setAuthUsername } = useContext(AuthContext);
+    const { setBucketList } = useContext(BucketListContext);
     const navigate = useNavigate();
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
@@ -15,6 +16,9 @@ export default function LoginSignup() {
     const handleLogout = () => {
         Cookies.remove('auth', { path: '/' });
         setIsLoggedIn(false);
+        setUserId(null);
+        setAuthUsername(null);
+        setBucketList([]);
         navigate('/login');
     };
 
@@ -48,6 +52,16 @@ export default function LoginSignup() {
             Cookies.set('auth', token, { expires: 7 });
 
             setIsLoggedIn(true);
+            setUserId(match._id);
+            setAuthUsername(match.username);
+            
+            // Fetch user's favorites
+            await fetchFavorites({
+                userId: match._id,
+                username: match.username,
+                setBucketList
+            });
+            
             navigate('/');
         } catch (err) {
             console.error("LOGIN ERROR:", err);
@@ -83,21 +97,31 @@ export default function LoginSignup() {
             <h1 style={{ textAlign: 'center', marginBottom: '30px' }}>Login</h1>
 
             <form style={{ display: 'flex', flexDirection: 'column', gap: '20px' }}>
-                <input
-                    className="signup-input"
-                    type="text"
-                    placeholder="Username"
-                    value={username}
-                    onChange={(e) => setUsername(e.target.value)}
-                />
+                <label htmlFor="login-username" style={{ fontSize: '14px', fontWeight: '500' }}>
+                    Username
+                    <input
+                        id="login-username"
+                        className="signup-input"
+                        type="text"
+                        // placeholder="Username"
+                        value={username}
+                        onChange={(e) => setUsername(e.target.value)}
+                        style={{ display: 'block', width: '100%', marginTop: '5px' }}
+                    />
+                </label>
 
-                <input
-                    className="signup-input"
-                    type="password"
-                    placeholder="Password"
-                    value={password}
-                    onChange={(e) => setPassword(e.target.value)}
-                />
+                <label htmlFor="login-password" style={{ fontSize: '14px', fontWeight: '500' }}>
+                    Password
+                    <input
+                        id="login-password"
+                        className="signup-input"
+                        type="password"
+                        // placeholder="Password"
+                        value={password}
+                        onChange={(e) => setPassword(e.target.value)}
+                        style={{ display: 'block', width: '100%', marginTop: '5px' }}
+                    />
+                </label>
             </form>
 
             <button

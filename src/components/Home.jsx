@@ -24,7 +24,7 @@ export default function Home() {
       {/* "HOW IT WORKS" SECTION */}
       <Row className="justify-content-center">
         <Col md={10}>
-          <h3 className="text-center mb-4">How It Works</h3>
+          <h2 className="text-center mb-4">How It Works</h2>
           <Row xs={1} md={3} className="g-4">
             
             <Col>
@@ -70,7 +70,7 @@ export default function Home() {
       {/* WHY USE OUR SITE */}
       <Row className="mt-5 justify-content-center">
         <Col md={10}>
-          <h3 className="text-center mb-3">Why Use This Website?</h3>
+          <h2 className="text-center mb-3">Why Use This Website?</h2>
           <p className="text-center fs-5">
             Whether you're dreaming of a warm beach, a snowy mountain escape,
             or a bustling cultural city, our platform helps you discover  

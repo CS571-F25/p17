@@ -47,8 +47,9 @@ export default function AllLocations() {
             <Col
               key={loc.id}
               xs={12}
-              sm={8}
+              sm={6}
               md={4}
+              lg={3}
               className="mb-4 d-flex justify-content-center"
             >
               <LocationCard location={loc} />

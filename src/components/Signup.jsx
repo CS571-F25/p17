@@ -1,10 +1,12 @@
 import { useContext, useState } from 'react';
-import { AuthContext } from '../App';
+import { AuthContext, BucketListContext } from '../App';
 import { getAllUsers, createUser } from '../utils/bucket';
 import { useNavigate } from 'react-router';
+import Cookies from 'js-cookie';
 
 export default function Signup() {
-    const { isLoggedIn, setIsLoggedIn } = useContext(AuthContext);
+    const { isLoggedIn, setIsLoggedIn, setUserId, setUsername: setAuthUsername } = useContext(AuthContext);
+    const { setBucketList } = useContext(BucketListContext);
 
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
@@ -44,17 +46,28 @@ export default function Signup() {
             return;
         }
 
-        await createUser({
+        const newUser = await createUser({
             username,
             password,
             favorites: []
         });
 
+        // Create auth token and set cookie
+        const token = btoa(JSON.stringify({
+            username: username,
+            _id: newUser._id
+        }));
+        Cookies.set('auth', token, { expires: 7 });
+
         setMessage('Signup successful!');
+        setIsLoggedIn(true);
+        setUserId(newUser._id);
+        setAuthUsername(username);
+        setBucketList([]);
+        
         setUsername('');
         setPassword('');
         setConfirmPassword('');
-        setIsLoggedIn(true);
         navigate('/');
     }
 
@@ -63,29 +76,44 @@ export default function Signup() {
             <h1 style={{ textAlign: 'center', marginBottom: '30px' }}>Sign Up</h1>
 
             <form style={{ display: 'flex', flexDirection: 'column', gap: '20px' }}>
-                <input
-                    className="signup-input"
-                    type="text"
-                    placeholder="Username"
-                    value={username}
-                    onChange={(e) => setUsername(e.target.value)}
-                />
+                <label htmlFor="signup-username" style={{ fontSize: '14px', fontWeight: '500' }}>
+                    Username
+                    <input
+                        id="signup-username"
+                        className="signup-input"
+                        type="text"
+                        // placeholder="Username"
+                        value={username}
+                        onChange={(e) => setUsername(e.target.value)}
+                        style={{ display: 'block', width: '100%', marginTop: '5px' }}
+                    />
+                </label>
 
-                <input
-                    className="signup-input"
-                    type="password"
-                    placeholder="Password"
-                    value={password}
-                    onChange={(e) => setPassword(e.target.value)}
-                />
+                <label htmlFor="signup-password" style={{ fontSize: '14px', fontWeight: '500' }}>
+                    Password
+                    <input
+                        id="signup-password"
+                        className="signup-input"
+                        type="password"
+                        // placeholder="Password"
+                        value={password}
+                        onChange={(e) => setPassword(e.target.value)}
+                        style={{ display: 'block', width: '100%', marginTop: '5px' }}
+                    />
+                </label>
 
-                <input
-                    className="signup-input"
-                    type="password"
-                    placeholder="Confirm Password"
-                    value={confirmPassword}
-                    onChange={(e) => setConfirmPassword(e.target.value)}
-                />
+                <label htmlFor="signup-confirm-password" style={{ fontSize: '14px', fontWeight: '500' }}>
+                    Confirm Password
+                    <input
+                        id="signup-confirm-password"
+                        className="signup-input"
+                        type="password"
+                        // placeholder="Confirm Password"
+                        value={confirmPassword}
+                        onChange={(e) => setConfirmPassword(e.target.value)}
+                        style={{ display: 'block', width: '100%', marginTop: '5px' }}
+                    />
+                </label>
             </form>
 
             <button
