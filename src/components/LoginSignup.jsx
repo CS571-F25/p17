@@ -1,12 +1,13 @@
 import { useContext, useState } from 'react';
 import { Link } from 'react-router';
-import { AuthContext } from '../App';
+import { AuthContext, BucketListContext } from '../App';
 import Cookies from 'js-cookie';
-import { getAllUsers } from '../utils/bucket';
+import { getAllUsers, fetchFavorites } from '../utils/bucket';
 import { useNavigate } from 'react-router';
 
 export default function LoginSignup() {
-    const { isLoggedIn, setIsLoggedIn } = useContext(AuthContext);
+    const { isLoggedIn, setIsLoggedIn, setUserId, setUsername: setAuthUsername } = useContext(AuthContext);
+    const { setBucketList } = useContext(BucketListContext);
     const navigate = useNavigate();
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
@@ -15,6 +16,9 @@ export default function LoginSignup() {
     const handleLogout = () => {
         Cookies.remove('auth', { path: '/' });
         setIsLoggedIn(false);
+        setUserId(null);
+        setAuthUsername(null);
+        setBucketList([]);
         navigate('/login');
     };
 
@@ -48,6 +52,16 @@ export default function LoginSignup() {
             Cookies.set('auth', token, { expires: 7 });
 
             setIsLoggedIn(true);
+            setUserId(match._id);
+            setAuthUsername(match.username);
+            
+            // Fetch user's favorites
+            await fetchFavorites({
+                userId: match._id,
+                username: match.username,
+                setBucketList
+            });
+            
             navigate('/');
         } catch (err) {
             console.error("LOGIN ERROR:", err);

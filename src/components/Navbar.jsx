@@ -1,10 +1,11 @@
 import { Link, useNavigate } from 'react-router';
 import { useContext } from 'react';
-import { AuthContext } from '../App';
+import { AuthContext, BucketListContext } from '../App';
 import Cookies from 'js-cookie';
 
 export default function Navbar() {
-    const { isLoggedIn, setIsLoggedIn } = useContext(AuthContext);
+    const { isLoggedIn, setIsLoggedIn, setUserId, setUsername } = useContext(AuthContext);
+    const { setBucketList } = useContext(BucketListContext);
     const navigate = useNavigate();
 
     function handleLogout() {
@@ -13,6 +14,9 @@ export default function Navbar() {
         
         // Clear login state
         setIsLoggedIn(false);
+        setUserId(null);
+        setUsername(null);
+        setBucketList([]);
 
         // Redirect to login page
         navigate('/login');

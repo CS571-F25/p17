@@ -1,10 +1,12 @@
 import { useContext, useState } from 'react';
-import { AuthContext } from '../App';
+import { AuthContext, BucketListContext } from '../App';
 import { getAllUsers, createUser } from '../utils/bucket';
 import { useNavigate } from 'react-router';
+import Cookies from 'js-cookie';
 
 export default function Signup() {
-    const { isLoggedIn, setIsLoggedIn } = useContext(AuthContext);
+    const { isLoggedIn, setIsLoggedIn, setUserId, setUsername: setAuthUsername } = useContext(AuthContext);
+    const { setBucketList } = useContext(BucketListContext);
 
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
@@ -44,17 +46,28 @@ export default function Signup() {
             return;
         }
 
-        await createUser({
+        const newUser = await createUser({
             username,
             password,
             favorites: []
         });
 
+        // Create auth token and set cookie
+        const token = btoa(JSON.stringify({
+            username: username,
+            _id: newUser._id
+        }));
+        Cookies.set('auth', token, { expires: 7 });
+
         setMessage('Signup successful!');
+        setIsLoggedIn(true);
+        setUserId(newUser._id);
+        setAuthUsername(username);
+        setBucketList([]);
+        
         setUsername('');
         setPassword('');
         setConfirmPassword('');
-        setIsLoggedIn(true);
         navigate('/');
     }
 

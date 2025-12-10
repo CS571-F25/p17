@@ -1,10 +1,13 @@
 import { useContext } from 'react';
 import { OverlayTrigger, Tooltip } from 'react-bootstrap';
-import { BucketListContext } from '../App';
+import { BucketListContext, AuthContext } from '../App';
 import bucketIcon from '../assets/bucketlist.png';
+import { useNavigate } from 'react-router';
 
 export default function QuestionnaireCard({ destination }) {
     const { bucketList, toggleBucketItem } = useContext(BucketListContext);
+    const { isLoggedIn } = useContext(AuthContext);
+    const navigate = useNavigate();
 
     const {
         name,
@@ -23,6 +26,11 @@ export default function QuestionnaireCard({ destination }) {
     const isInBucket = bucketList.some(item => item.id === destination?.id);
 
     const handleBucketToggle = () => {
+        if (!isLoggedIn) {
+            alert("Please log in to add destinations to your bucket list!");
+            navigate("/login");
+            return;
+        }
         if (destination) {
             toggleBucketItem(destination);
         }

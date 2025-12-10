@@ -13,39 +13,87 @@ import TravelPosts from './components/TravelPosts';
 import Cookies from "js-cookie";
 import { useEffect } from 'react';
 import 'bootstrap/dist/css/bootstrap.min.css';
+import { fetchFavorites, addToBucketList, removeFromBucketList } from './utils/bucket';
 
 export const AuthContext = createContext();
 export const BucketListContext = createContext();
 
 function App() {
   const [isLoggedIn, setIsLoggedIn] = useState(!!Cookies.get("auth"));
+  const [userId, setUserId] = useState(null);
+  const [username, setUsername] = useState(null);
   const [bucketList, setBucketList] = useState([]);
 
   useEffect(() => {
     const token = Cookies.get('auth');
     if (token) {
-      setIsLoggedIn(true);
+      try {
+        const decoded = JSON.parse(atob(token));
+        setIsLoggedIn(true);
+        setUserId(decoded._id);
+        setUsername(decoded.username);
+        
+        // Fetch favorites when user is logged in
+        fetchFavorites({
+          userId: decoded._id,
+          username: decoded.username,
+          setBucketList
+        });
+      } catch (error) {
+        console.error("Error decoding token:", error);
+        setIsLoggedIn(false);
+      }
     } else {
       setIsLoggedIn(false);
+      setBucketList([]);
     }
   }, []);
 
-  const toggleBucketItem = (destination) => {
-    setBucketList(prev => {
-      if (!destination || !destination.id) {
-        return prev;
-      }
+  const toggleBucketItem = async (destination) => {
+    console.log("toggleBucketItem called", { destination, userId, username, bucketList });
+    
+    if (!destination || !destination.id) {
+      console.warn("Invalid destination");
+      return;
+    }
 
-      const exists = prev.some(item => item.id === destination.id);
-      return exists
-        ? prev.filter(item => item.id !== destination.id)
-        : [...prev, destination];
-    });
+    if (!userId && !username) {
+      console.warn("User not logged in, cannot modify bucket list");
+      return;
+    }
+
+    const exists = bucketList.some(item => item.id === destination.id);
+    console.log("Destination exists in bucket?", exists);
+    
+    try {
+      if (exists) {
+        console.log("Removing from bucket list...");
+        await removeFromBucketList({
+          destinationId: destination.id,
+          userId,
+          username,
+          bucketList,
+          setBucketList
+        });
+      } else {
+        console.log("Adding to bucket list...");
+        await addToBucketList({
+          destination,
+          userId,
+          username,
+          bucketList,
+          setBucketList
+        });
+      }
+      console.log("Toggle completed successfully");
+    } catch (error) {
+      console.error("Error toggling bucket item:", error);
+    }
   };
 
   return (
-    <AuthContext.Provider value={{ isLoggedIn, setIsLoggedIn }}>
-      <BucketListContext.Provider value={{ bucketList, toggleBucketItem }}>
+    <AuthContext.Provider value={{ isLoggedIn, setIsLoggedIn, userId, setUserId, username, setUsername }}>
+      <BucketListContext.Provider value={{ bucketList, setBucketList, toggleBucketItem }}>
         <HashRouter>
           <Navbar />
           <Routes>
