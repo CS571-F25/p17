@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { getTopMatches } from '../utils/scoring';
+import QuestionnaireCard from './QuestionnaireCard';
 
 export default function Questionnaire() {
     const [formData, setFormData] = useState({
@@ -121,27 +122,8 @@ export default function Questionnaire() {
                             <>
                                 <div className="row">
                                     {results.map((dest, index) => (
-                                        <div key={dest.id} className="col-md-4 mb-4">
-                                            <div className="card h-100">
-                                                <div className="card-body">
-                                                    <h5 className="card-title">{dest.name}</h5>
-                                                    <p className="card-text">
-                                                        <strong>Continent:</strong> {dest.continent}<br />
-                                                        <strong>Climate:</strong> {dest.climate}<br />
-                                                        <strong>Price:</strong> {dest.price}<br />
-                                                        <strong>Pace:</strong> {Array.isArray(dest.pace) ? dest.pace.join(', ') : dest.pace}<br />
-                                                        <strong>Environment:</strong> {dest.environment.join(', ')}<br />
-                                                        <strong>Activities:</strong> {dest.activities.join(', ')}<br />
-                                                        <strong>Season:</strong> {dest.season.join(', ')}<br />
-                                                    </p>
-                                                    <p className="card-text">
-                                                        <small className="text-muted">{dest.description}</small>
-                                                    </p>
-                                                    <p className="card-text">
-                                                        <span className="badge bg-primary">Match Score: {dest.score}</span>
-                                                    </p>
-                                                </div>
-                                            </div>
+                                        <div key={dest.id || index} className="col-md-4 mb-4">
+                                            <QuestionnaireCard destination={dest} />
                                         </div>
                                     ))}
                                 </div>
