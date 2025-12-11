@@ -1,6 +1,6 @@
 import { Form } from "react-bootstrap";
 
-export default function Searchbar({ value, onChange }) {
+export default function Searchbar({ value, onChange, placeholder = "Search by City/Country" }) {
     return (
         <div
             style={{
@@ -23,7 +23,7 @@ export default function Searchbar({ value, onChange }) {
                 <Form.Control
                     id="search-locations"
                     type="text"
-                    placeholder="Search by City/Country"
+                    placeholder={placeholder}
                     size="lg"
                     value={value}
                     onChange={onChange}

@@ -46,7 +46,12 @@ export default function Navbar() {
                             <Link 
                                 className="nav-link" 
                                 to="/" 
-                                style={{ color: location.pathname === '/' ? 'black' : 'white' }}
+                                style={{ 
+                                    color: '#003366',
+                                    border: location.pathname === '/' ? '2px solid #003366' : 'none',
+                                    borderRadius: '8px',
+                                    padding: '6px 12px'
+                                }}
                             >
                                 Home
                             </Link>
@@ -55,7 +60,12 @@ export default function Navbar() {
                             <Link 
                                 className="nav-link" 
                                 to="/questionnaire" 
-                                style={{ color: location.pathname === '/questionnaire' ? 'black' : 'white' }}
+                                style={{ 
+                                    color: '#003366',
+                                    border: location.pathname === '/questionnaire' ? '2px solid #003366' : 'none',
+                                    borderRadius: '8px',
+                                    padding: '6px 12px'
+                                }}
                             >
                                 Questionnaire
                             </Link>
@@ -64,7 +74,12 @@ export default function Navbar() {
                             <Link 
                                 className="nav-link" 
                                 to="/bucket-list" 
-                                style={{ color: location.pathname === '/bucket-list' ? 'black' : 'white' }}
+                                style={{ 
+                                    color: '#003366',
+                                    border: location.pathname === '/bucket-list' ? '2px solid #003366' : 'none',
+                                    borderRadius: '8px',
+                                    padding: '6px 12px'
+                                }}
                             >
                                 Bucket List
                             </Link>
@@ -73,7 +88,12 @@ export default function Navbar() {
                             <Link 
                                 className="nav-link" 
                                 to="/locations" 
-                                style={{ color: location.pathname === '/locations' ? 'black' : 'white' }}
+                                style={{ 
+                                    color: '#003366',
+                                    border: location.pathname === '/locations' ? '2px solid #003366' : 'none',
+                                    borderRadius: '8px',
+                                    padding: '6px 12px'
+                                }}
                             >
                                 Locations
                             </Link>
@@ -82,7 +102,12 @@ export default function Navbar() {
                             <Link 
                                 className="nav-link" 
                                 to="/posts" 
-                                style={{ color: location.pathname === '/posts' ? 'black' : 'white' }}
+                                style={{ 
+                                    color: '#003366',
+                                    border: location.pathname === '/posts' ? '2px solid #003366' : 'none',
+                                    borderRadius: '8px',
+                                    padding: '6px 12px'
+                                }}
                             >
                                 Posts
                             </Link>
@@ -96,7 +121,12 @@ export default function Navbar() {
                                 <Link 
                                     className="nav-link" 
                                     to="/login"
-                                    style={{ color: location.pathname === '/login' ? 'black' : 'white' }}
+                                    style={{ 
+                                        color: '#003366',
+                                        border: location.pathname === '/login' ? '2px solid #003366' : 'none',
+                                        borderRadius: '8px',
+                                        padding: '6px 12px'
+                                    }}
                                 >
                                     Login / Signup
                                 </Link>
@@ -107,7 +137,13 @@ export default function Navbar() {
                             <li className="nav-item">
                                 <button
                                     className="btn btn-link nav-link"
-                                    style={{ cursor: 'pointer', color: 'white', textDecoration: 'none' }}
+                                    style={{ 
+                                        cursor: 'pointer', 
+                                        color: '#003366', 
+                                        textDecoration: 'none',
+                                        borderRadius: '8px',
+                                        padding: '6px 12px'
+                                    }}
                                     onClick={handleLogout}
                                 >
                                     Logout

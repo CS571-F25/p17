@@ -181,7 +181,7 @@ export default function Questionnaire() {
                             margin-bottom: 0;
                         }
                     `}</style>
-                    <h1 className="mb-4">Travel Preferences Questionnaire</h1>
+                    <h1 className="mb-4 mt-5">Travel Preferences Questionnaire</h1>
                     <form onSubmit={handleSubmit}>
                         {/* Question 1: Continent */}
                         <div className="mb-4">

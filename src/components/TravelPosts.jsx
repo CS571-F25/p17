@@ -1,8 +1,10 @@
 import { useState, useEffect, useContext } from "react";
+import { Link } from "react-router";
 import { AuthContext } from "../App";
 import Cookies from "js-cookie";
 import { Container, Row, Col, Card, Button, Modal, Form } from "react-bootstrap";
 import { getAllPosts, createPost } from "../utils/posts";
+import Searchbar from "./Searchbar";
 
 export default function TravelPosts() {
     const { isLoggedIn } = useContext(AuthContext);
@@ -12,13 +14,29 @@ export default function TravelPosts() {
     const [posts, setPosts] = useState([]);
     const [showModal, setShowModal] = useState(false);
     const [message, setMessage] = useState("");
+    const [searchTerm, setSearchTerm] = useState("");
 
     useEffect(() => {
         (async () => {
             const data = await getAllPosts();
-            setPosts(data);
+            // Sort posts by createdAt in descending order (most recent first)
+            const sortedData = data.sort((a, b) => b.createdAt - a.createdAt);
+            setPosts(sortedData);
         })();
     }, []);
+
+    const filteredPosts = posts.filter(post => {
+        const searchLower = searchTerm.toLowerCase();
+        return (
+            post.title.toLowerCase().includes(searchLower) ||
+            post.text.toLowerCase().includes(searchLower) ||
+            post.username.toLowerCase().includes(searchLower)
+        );
+    });
+
+    const handleSearchChange = (e) => {
+        setSearchTerm(e.target.value);
+    };
 
     async function handleSubmit() {
         setMessage("");
@@ -45,7 +63,7 @@ export default function TravelPosts() {
 
         await createPost(newPost);
 
-        setPosts([...posts, newPost]);
+        setPosts([newPost, ...posts]);
 
         setTitle("");
         setText("");
@@ -54,8 +72,10 @@ export default function TravelPosts() {
     }
 
     return (
-        <Container style={{ marginTop: "80px", marginBottom: "40px" }}>
-            <h1 className="text-center mb-4">Travel Posts</h1>
+        <>
+            <Searchbar value={searchTerm} onChange={handleSearchChange} placeholder="Search by Location/Text" />
+            <Container style={{ marginTop: "180px", marginBottom: "40px" }}>
+                <h1 className="text-center mb-4">Travel Posts</h1>
 
             {isLoggedIn && (
                 <div className="text-center mb-4">
@@ -70,13 +90,13 @@ export default function TravelPosts() {
 
             {!isLoggedIn && (
                 <p className="text-center text-muted mb-4">
-                    Log in to share your own travel experience.
+                    <Link to="/login" style={{ textDecoration: "none" }}>Log in</Link> to share your own travel experience.
                 </p>
             )}
 
             {/* ⭐ Responsive Bootstrap Grid */}
             <Row className="justify-content-start g-4 px-5">
-                {posts.map((post, idx) => (
+                {filteredPosts.map((post, idx) => (
                     <Col
                         xs={12} sm={6} md={6} lg={4}
                         key={idx}
@@ -178,5 +198,6 @@ export default function TravelPosts() {
                 </Modal.Footer>
             </Modal>
         </Container>
+        </>
     );
 }
