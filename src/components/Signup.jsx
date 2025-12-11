@@ -52,16 +52,27 @@ export default function Signup() {
             favorites: []
         });
 
+        console.log("Create user response:", newUser);
+
+        // The API returns { id: "...", ... } not { _id: "..." }
+        const userId = newUser.id || newUser._id;
+
+        if (!userId) {
+            console.error("No user ID returned from API:", newUser);
+            setMessage('Signup failed - no user ID received');
+            return;
+        }
+
         // Create auth token and set cookie
         const token = btoa(JSON.stringify({
             username: username,
-            _id: newUser._id
+            _id: userId
         }));
         Cookies.set('auth', token, { expires: 7 });
 
         setMessage('Signup successful!');
         setIsLoggedIn(true);
-        setUserId(newUser._id);
+        setUserId(userId);
         setAuthUsername(username);
         setBucketList([]);
         

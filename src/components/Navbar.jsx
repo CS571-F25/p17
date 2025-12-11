@@ -1,4 +1,4 @@
-import { Link, useNavigate } from 'react-router';
+import { Link, useNavigate, useLocation } from 'react-router';
 import { useContext } from 'react';
 import { AuthContext, BucketListContext } from '../App';
 import Cookies from 'js-cookie';
@@ -7,6 +7,7 @@ export default function Navbar() {
     const { isLoggedIn, setIsLoggedIn, setUserId, setUsername } = useContext(AuthContext);
     const { setBucketList } = useContext(BucketListContext);
     const navigate = useNavigate();
+    const location = useLocation();
 
     function handleLogout() {
         // Remove the auth cookie
@@ -23,9 +24,9 @@ export default function Navbar() {
     }
 
     return (
-        <nav className="navbar navbar-expand-lg navbar-light bg-light fixed-top">
+        <nav className="navbar navbar-expand-lg navbar-light fixed-top" style={{ backgroundColor: '#34A7D5' }}>
             <div className="container-fluid">
-                <Link className="navbar-brand" to="/">My App</Link>
+                <Link className="navbar-brand" to="/" style={{ color: 'white', fontWeight: 'bold' }}>VacationRecs</Link>
 
                 <button
                     className="navbar-toggler"
@@ -42,19 +43,49 @@ export default function Navbar() {
                 <div className="collapse navbar-collapse" id="navbarNav">
                     <ul className="navbar-nav">
                         <li className="nav-item">
-                            <Link className="nav-link" to="/">Home</Link>
+                            <Link 
+                                className="nav-link" 
+                                to="/" 
+                                style={{ color: location.pathname === '/' ? 'black' : 'white' }}
+                            >
+                                Home
+                            </Link>
                         </li>
                         <li className="nav-item">
-                            <Link className="nav-link" to="/questionnaire">Questionnaire</Link>
+                            <Link 
+                                className="nav-link" 
+                                to="/questionnaire" 
+                                style={{ color: location.pathname === '/questionnaire' ? 'black' : 'white' }}
+                            >
+                                Questionnaire
+                            </Link>
                         </li>
                         <li className="nav-item">
-                            <Link className="nav-link" to="/bucket-list">Bucket List</Link>
+                            <Link 
+                                className="nav-link" 
+                                to="/bucket-list" 
+                                style={{ color: location.pathname === '/bucket-list' ? 'black' : 'white' }}
+                            >
+                                Bucket List
+                            </Link>
                         </li>
                         <li className="nav-item">
-                            <Link className="nav-link" to="/locations">Locations</Link>
+                            <Link 
+                                className="nav-link" 
+                                to="/locations" 
+                                style={{ color: location.pathname === '/locations' ? 'black' : 'white' }}
+                            >
+                                Locations
+                            </Link>
                         </li>
                         <li className="nav-item">
-                            <Link className="nav-link" to="/posts">Posts</Link>
+                            <Link 
+                                className="nav-link" 
+                                to="/posts" 
+                                style={{ color: location.pathname === '/posts' ? 'black' : 'white' }}
+                            >
+                                Posts
+                            </Link>
                         </li>
                     </ul>
 
@@ -62,7 +93,11 @@ export default function Navbar() {
                     <ul className="navbar-nav ms-auto">
                         {!isLoggedIn && (
                             <li className="nav-item">
-                                <Link className="nav-link" to="/login">
+                                <Link 
+                                    className="nav-link" 
+                                    to="/login"
+                                    style={{ color: location.pathname === '/login' ? 'black' : 'white' }}
+                                >
                                     Login / Signup
                                 </Link>
                             </li>
@@ -72,7 +107,7 @@ export default function Navbar() {
                             <li className="nav-item">
                                 <button
                                     className="btn btn-link nav-link"
-                                    style={{ cursor: 'pointer' }}
+                                    style={{ cursor: 'pointer', color: 'white', textDecoration: 'none' }}
                                     onClick={handleLogout}
                                 >
                                     Logout

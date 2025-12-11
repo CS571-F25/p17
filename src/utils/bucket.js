@@ -119,31 +119,44 @@ export async function addToBucketList({
   
   const updatedFavorites = [...bucketList, destination];
   
-  const requestBody = {
-    id: userId,
-    username: username,
-    favorites: updatedFavorites
-  };
-  
-  console.log("=== API REQUEST DETAILS ===");
-  console.log("URL:", `${USERS_ENDPOINT}?id=${userId}`);
-  console.log("userId:", userId);
-  console.log("username:", username);
-  console.log("favoritesCount:", updatedFavorites.length);
-  console.log("Request Body (stringified):");
-  console.log(JSON.stringify(requestBody, null, 2));
-  
   try {
+    // First, fetch the current user data to get all fields including password
+    const getUserRes = await fetch(`${BASE_URL}/users`, {
+      headers: {
+        "X-CS571-ID": BID
+      }
+    });
+    
+    if (!getUserRes.ok) {
+      throw new Error(`Failed to fetch user data: ${getUserRes.status}`);
+    }
+    
+    const userData = await getUserRes.json();
+    const currentUser = userData?.results?.[userId];
+    
+    if (!currentUser) {
+      throw new Error("User not found");
+    }
+    
+    // Merge the updated favorites with all existing user data
+    const updatedUser = {
+      ...currentUser,
+      favorites: updatedFavorites
+    };
+    
+    console.log("=== API REQUEST DETAILS ===");
+    console.log("URL:", `${USERS_ENDPOINT}?id=${userId}`);
+    console.log("userId:", userId);
+    console.log("username:", username);
+    console.log("favoritesCount:", updatedFavorites.length);
+    
     const res = await fetch(`${USERS_ENDPOINT}?id=${userId}`, {
       method: "PUT",
       headers: {
         "X-CS571-ID": BID,
         "Content-Type": "application/json"
       },
-      body: JSON.stringify({
-        username: username,
-        favorites: updatedFavorites
-      })
+      body: JSON.stringify(updatedUser)
     });
     
     console.log("API response status:", res.status);
@@ -183,16 +196,37 @@ export async function removeFromBucketList({
   console.log("Making API call to remove from bucket list...");
   
   try {
+    // First, fetch the current user data to get all fields including password
+    const getUserRes = await fetch(`${BASE_URL}/users`, {
+      headers: {
+        "X-CS571-ID": BID
+      }
+    });
+    
+    if (!getUserRes.ok) {
+      throw new Error(`Failed to fetch user data: ${getUserRes.status}`);
+    }
+    
+    const userData = await getUserRes.json();
+    const currentUser = userData?.results?.[userId];
+    
+    if (!currentUser) {
+      throw new Error("User not found");
+    }
+    
+    // Merge the updated favorites with all existing user data
+    const updatedUser = {
+      ...currentUser,
+      favorites: updatedFavorites
+    };
+    
     const res = await fetch(`${USERS_ENDPOINT}?id=${userId}`, {
       method: "PUT",
       headers: {
         "X-CS571-ID": BID,
         "Content-Type": "application/json"
       },
-      body: JSON.stringify({
-        username: username,
-        favorites: updatedFavorites
-      })
+      body: JSON.stringify(updatedUser)
     });
     
     console.log("API response status:", res.status);
